@@ -1,0 +1,6 @@
+dependencies {
+    implementation project(':platform:platform-config')
+    implementation project(':platform:platform-common')
+
+    implementation project(':app-service:user-api')
+}

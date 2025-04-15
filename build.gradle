@@ -1,0 +1,68 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.3' apply false
+    id 'io.spring.dependency-management' version '1.1.6' apply false
+}
+
+allprojects {
+    group = 'com.example'
+    version = '1.0.0'
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+
+    java {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    dependencies {
+        compileOnly libs.lombok
+        annotationProcessor libs.lombok
+
+        testCompileOnly libs.lombok
+        testAnnotationProcessor libs.lombok
+        testImplementation libs.spring.boot.test
+    }
+
+    if (project.name.startsWith("platform-")) {
+        dependencies {}
+    }
+
+    if (project.name.endsWith("-api")) {
+        dependencies {
+            implementation libs.spring.web
+            implementation libs.openfeign.core
+//            implementation libs.spring.boot.starter.jersey
+        }
+    }
+
+    if (project.name.endsWith("-service") && project.name != "app-service") {
+        apply plugin: 'org.springframework.boot' // 应用该插件必须在服务里有启动类，否则编译失败
+        apply plugin: 'io.spring.dependency-management'
+
+        dependencies {
+            implementation libs.spring.boot.web
+            implementation libs.spring.cloud.openfeign
+            implementation libs.embedded.redis
+            runtimeOnly libs.h2
+        }
+    }
+
+    if (project.name.endsWith("-ui") && project.name != "app-ui") {
+        apply plugin: 'org.springframework.boot'
+        apply plugin: 'io.spring.dependency-management'
+
+        dependencies {
+            implementation libs.spring.boot.web
+            implementation libs.spring.cloud.openfeign
+            implementation libs.spring.cloud.loadbalancer // spring cloud 2023+ 非裸 feign 必须引入
+            implementation libs.springdoc.openapi.ui
+        }
+    }
+}

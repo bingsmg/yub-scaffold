@@ -1,0 +1,7 @@
+scaffold:
+  host: 127.0.0.1 # domain
+  tomcat-port: ${scaffold.port.${spring.application.name}}
+  url:
+    user-service: ${scaffold.host}
+  port:
+    user-service: ${scaffold.server.port:8080}

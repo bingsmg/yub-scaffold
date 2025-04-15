@@ -1,0 +1,12 @@
+rootProject.name = 'yub-scaffold'
+include 'app-service'
+include 'app-ui'
+include 'platform'
+include 'platform:platform-common'
+include 'platform:platform-config'
+include 'app-service:user-api'
+include 'app-service:user-service'
+include 'app-ui:user-ui'
+include 'app-service:user-client'
+findProject(':app-service:user-client')?.name = 'user-client'
+
