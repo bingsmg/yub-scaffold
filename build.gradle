@@ -9,6 +9,9 @@ allprojects {
     version = '1.0.0'
 
     repositories {
+        mavenLocal()
+        // 阿里云公共仓库
+        maven { url "https://maven.aliyun.com/repository/public" }
         mavenCentral()
     }
 }
